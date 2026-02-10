@@ -1,0 +1,6 @@
+@Acceloka.WebApiStandard.WebApi_HostAddress = http://localhost:5007
+
+GET {{Acceloka.WebApiStandard.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

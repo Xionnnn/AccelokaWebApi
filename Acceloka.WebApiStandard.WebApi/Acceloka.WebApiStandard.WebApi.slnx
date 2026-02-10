@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../Acceloka.WebApiStandard.Contracts/Acceloka.WebApiStandard.Contracts.csproj" />
+  <Project Path="../Acceloka.WebApiStandard.Entities/Acceloka.WebApiStandard.Entities.csproj" />
+  <Project Path="../Acceloka.WebApiStandard/Acceloka.WebApiStandard.csproj" />
+  <Project Path="Acceloka.WebApiStandard.WebApi.csproj" />
+</Solution>
