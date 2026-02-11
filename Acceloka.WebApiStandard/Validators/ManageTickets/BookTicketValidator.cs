@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Acceloka.WebApiStandard.Validators.ManageTickets
 {
-    public class BookTicketRequestValidator : AbstractValidator<BookTicketRequest>
+    public class BookTicketValidator : AbstractValidator<BookTicketRequest>
     {
-        public BookTicketRequestValidator()
+        public BookTicketValidator()
         {
             RuleFor(x => x.Items)
                 .NotNull().WithMessage("Items is required.")

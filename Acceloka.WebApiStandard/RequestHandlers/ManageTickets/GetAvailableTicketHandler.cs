@@ -4,18 +4,14 @@ using Acceloka.WebApiStandard.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Serilog.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
 {
-    public class GetAvailableTicketRequestHandler : IRequestHandler<GetAvailableTicketRequest, GetAvailableTicketResponse?>
+    public class GetAvailableTicketHandler : IRequestHandler<GetAvailableTicketRequest, GetAvailableTicketResponse?>
     {
         private readonly AccelokaDbContext _db;
-        private readonly ILogger<GetAvailableTicketRequestHandler> _logger;
-        public GetAvailableTicketRequestHandler(AccelokaDbContext db, ILogger<GetAvailableTicketRequestHandler> logger)
+        private readonly ILogger<GetAvailableTicketHandler> _logger;
+        public GetAvailableTicketHandler(AccelokaDbContext db, ILogger<GetAvailableTicketHandler> logger)
         {
             _db = db;
             _logger = logger;

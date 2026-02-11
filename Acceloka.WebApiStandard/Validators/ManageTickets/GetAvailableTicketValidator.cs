@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Acceloka.WebApiStandard.Validators.ManageTickets
 {
-    public class GetAvailableTicketRequestValidator : AbstractValidator<GetAvailableTicketRequest>
+    public class GetAvailableTicketValidator : AbstractValidator<GetAvailableTicketRequest>
     {
         private static readonly string[] AllowedOrderStates = ["asc", "desc"];
 
@@ -20,7 +20,7 @@ namespace Acceloka.WebApiStandard.Validators.ManageTickets
             "Quota"
         ];
 
-        public GetAvailableTicketRequestValidator()
+        public GetAvailableTicketValidator()
         {
             RuleFor(x => x.CategoryName)
                 .Must(v => v == string.Empty || !string.IsNullOrWhiteSpace(v))

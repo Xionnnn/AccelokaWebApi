@@ -8,14 +8,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
 {
-    public class BookTicketRequestHandler : IRequestHandler<BookTicketRequest, BookTicketResponse?>
+    public class BookTicketHandler : IRequestHandler<BookTicketRequest, BookTicketResponse?>
     {
         private readonly AccelokaDbContext _db;
-        private readonly ILogger<BookTicketRequestHandler> _logger;
+        private readonly ILogger<BookTicketHandler> _logger;
 
-        public BookTicketRequestHandler(
+        public BookTicketHandler(
             AccelokaDbContext db,
-            ILogger<BookTicketRequestHandler> logger
+            ILogger<BookTicketHandler> logger
             )
         {
             _db = db;
@@ -34,7 +34,7 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                     Quantity = g.Sum(i => i.Quantity)
                 })
                 .ToList();
-
+            
             var reqCodes = filteredRequest.Select(x => x.TicketCode).ToList();
             var qtyByCode = filteredRequest.ToDictionary(x => x.TicketCode, x => x.Quantity);
 
