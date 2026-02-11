@@ -44,7 +44,7 @@ namespace Acceloka.WebApiStandard.Validators.ManageTickets
                     !x.MinimalEventDate.HasValue ||
                     !x.MaximalEventDate.HasValue ||
                     x.MinimalEventDate.Value <= x.MaximalEventDate.Value)
-                .WithMessage("MinimalEventDate have to be <= MaximalEventDate.");
+                .WithMessage("MinimalEventDate have to be <= MaximalEventDate and both have to exist.");
 
             RuleFor(x => x.OrderState)
                 .Must(v => string.IsNullOrWhiteSpace(v) || AllowedOrderStates.Contains(v.Trim().ToLowerInvariant()))

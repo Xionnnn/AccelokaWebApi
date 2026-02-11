@@ -24,6 +24,7 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
         public async Task<GetAvailableTicketResponse?> Handle(GetAvailableTicketRequest request, CancellationToken ct)
         {
             _logger.LogInformation("Getting available tickets with filters: CategoryName={CategoryName}, TicketCode={TicketCode}", request.CategoryName, request.TicketCode);
+
             var query = _db.Tickets
                .Include(t => t.Category)
                .Where(t => t.Quota > 0)
@@ -46,7 +47,7 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
 
             if (request.Price.HasValue)
             {
-                query = query.Where(t => t.Price == request.Price.Value);
+                query = query.Where(t => t.Price <= request.Price.Value);
             }
 
             if (request.MinimalEventDate.HasValue)

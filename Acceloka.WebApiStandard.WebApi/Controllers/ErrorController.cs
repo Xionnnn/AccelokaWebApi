@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class ErrorController : ControllerBase
 {
-    [HttpGet]
     public IActionResult HandleError()
     {
         var feature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
@@ -30,6 +29,18 @@ public class ErrorController : ControllerBase
 
             return BadRequest(problem);
         }
+
+        if (ex is InvalidOperationException ioex)
+        {
+            return BadRequest(new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "A validation error has occured.",
+                Detail = ioex.Message,
+                Instance = originalPath
+            });
+        }
+
 
         return Problem(instance: originalPath);
     }

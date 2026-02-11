@@ -25,12 +25,18 @@ builder.Services.AddOpenApi();
 
 // MediatR (scan assembly Application)
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAvailableTicketRequestHandler>());
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<BookTicketRequestHandler>());
 
 // FluentValidation (scan assembly Application)
 builder.Services.AddValidatorsFromAssemblyContaining<GetAvailableTicketRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<BookTicketRequestValidator>();
 
 // FluentValidation via MediatR pipeline behavior
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+//Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 //Db Connection
 var connectionString = builder.Configuration.GetConnectionString("PgSQLDB");
@@ -43,6 +49,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 // Error Compliant
