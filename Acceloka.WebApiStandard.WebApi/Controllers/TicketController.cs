@@ -31,5 +31,20 @@ namespace Acceloka.WebApiStandard.WebApi.Controllers
             var response = await _mediator.Send(request, ct);
             return Ok(response);
         }
+
+        [HttpGet("get-booked-ticket/{BookedTicketId}")]
+        public async Task<IActionResult> ViewBookingDetailById([FromRoute] ViewTicketDetailRequest request, CancellationToken ct)
+        {
+            var response = await _mediator.Send(request, ct);
+            return Ok(response);
+        }
+
+
+        [HttpDelete("revoke-ticket/{BookedTicketId}/{TicketCode}/{Qty}")]
+        public async Task<IActionResult> revokeTicketById([FromRoute] DeleteBookedTicketRequest request, CancellationToken ct)
+        {
+            var response = await _mediator.Send(request, ct);
+            return Ok(response);
+        }
     }
 }
