@@ -27,13 +27,13 @@ builder.Services.AddOpenApi();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAvailableTicketHandler>());
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<BookTicketHandler>());
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<ViewTicketDetailHandler>());
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<DeleteBookedTicketHandler>());
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RevokeBookedTicketHandler>());
 
 // FluentValidation (scan assembly Application)
 builder.Services.AddValidatorsFromAssemblyContaining<GetAvailableTicketValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<BookTicketValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<ViewTicketDetailValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<DeleteBookedTicketValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RevokeBookedTicketValidator>();
 
 // FluentValidation via MediatR pipeline behavior
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

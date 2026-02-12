@@ -122,7 +122,7 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                     ? query.OrderByDescending(t => t.Quota)
                     : query.OrderBy(t => t.Quota),
 
-                // The default ordering is TicketCode ascending
+                // default orderingnya menggunakan TicketCode ascending
                 _ => query.OrderBy(t => t.TicketCode)
             };
         }

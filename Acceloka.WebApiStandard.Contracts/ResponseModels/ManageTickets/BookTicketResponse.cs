@@ -3,19 +3,19 @@
     public class BookTicketResponse
     {
         public decimal PriceSummary { get; set; }
-        public IReadOnlyList<categoryDto> TicketsPerCategories { get; set; } = Array.Empty<categoryDto>();
+        public IReadOnlyList<CategoryDto> TicketsPerCategories { get; set; } = Array.Empty<CategoryDto>();
 
     }
 
-    public class categoryDto
+    public class CategoryDto
     {
         public string CategoryName { get; set; } = string.Empty;
 
         public decimal SummaryPrice { get; set; }
-        public IReadOnlyList<ticketDto> Tickets { get; set; } = Array.Empty<ticketDto>();
+        public IReadOnlyList<TicketDto> Tickets { get; set; } = Array.Empty<TicketDto>();
     }
 
-    public class ticketDto
+    public class TicketDto
     {
         public string TicketCode { get; set; } = string.Empty;
         public string TicketName { get; set; } = string.Empty;

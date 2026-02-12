@@ -6,14 +6,14 @@ using System.Text;
 
 namespace Acceloka.WebApiStandard.Contracts.RequestModels.ManageTickets
 {
-    public class BookTicketRequest : IRequest<BookTicketResponse>
+    public class EditBookedTicketRequest : IRequest<IReadOnlyList<EditBookedTicketResponse>>
     {
-        public List<BookTicketDto> Items { get; set; } = new List<BookTicketDto>();
+        public int BookedTicketId { get; set; }
 
-        public DateTime BookingDate = DateTime.Now;
+        public IReadOnlyList<EditBookTicketDto> Items { get; set; } = new List<EditBookTicketDto>();
     }
 
-    public class BookTicketDto
+    public class EditBookTicketDto
     {
         public string TicketCode { get; set; } = string.Empty;
         public int Quantity { get; set; }

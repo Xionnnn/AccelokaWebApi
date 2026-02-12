@@ -44,12 +44,6 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
 
             _logger.LogInformation($"Found {tickets.Count} tickets.");
 
-            var foundCodes = tickets.Select(t => t.TicketCode).ToHashSet();
-            var missingCodes = reqCodes.Where(c => !foundCodes.Contains(c)).ToList();
-            if (missingCodes.Count > 0)
-            {
-                throw new InvalidOperationException($"Ticket not found: {string.Join(", ", missingCodes)}");
-            }
 
             var ticketByCode = tickets.ToDictionary(x => x.TicketCode);
 
@@ -58,16 +52,6 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
             foreach (var item in filteredRequest)
             {
                 var ticket = ticketByCode[item.TicketCode];
-
-                if (ticket.Quota < item.Quantity)
-                {
-                    throw new InvalidOperationException($"Not enough quota: {item.TicketCode}");
-                }
-
-                if (ticket.EventDate <= request.bookingDate)
-                {
-                    throw new InvalidOperationException($"Event date must be after booking date: {item.TicketCode}");
-                }
 
                 ticket.Quota -= item.Quantity;
 
@@ -80,7 +64,7 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
 
             var booking = new Booking
             {
-                BookingDate = request.bookingDate,
+                BookingDate = request.BookingDate,
                 BookingTickets = bookedTickets
             };
 
@@ -98,11 +82,11 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
             var categoriesDto = tickets
                 .Where(t => t.CategoryId.HasValue)
                 .GroupBy(t => t.CategoryId!.Value)
-                .Select(g => new categoryDto
+                .Select(g => new CategoryDto
                 {
                     CategoryName = categoryNameById[g.Key],
                     SummaryPrice = g.Sum(t => t.Price * qtyByCode[t.TicketCode]),
-                    Tickets = g.Select(t => new ticketDto
+                    Tickets = g.Select(t => new TicketDto
                     {
                         TicketCode = t.TicketCode,
                         TicketName = t.Name,
