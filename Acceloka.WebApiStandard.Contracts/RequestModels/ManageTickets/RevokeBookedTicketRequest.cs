@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Acceloka.WebApiStandard.Contracts.RequestModels.ManageTickets
 {
-    public class DeleteBookedTicketRequest : IRequest<DeleteBookedTicketResponse>
+    public class RevokeBookedTicketRequest : IRequest<RevokeBookedTicketResponse>
     {
         public int BookedTicketId { get; set; }
         public string TicketCode { get; set; } = string.Empty;

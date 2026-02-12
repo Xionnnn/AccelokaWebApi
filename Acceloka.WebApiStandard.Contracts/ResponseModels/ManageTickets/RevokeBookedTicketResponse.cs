@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Acceloka.WebApiStandard.Contracts.ResponseModels.ManageTickets
 {
-    public class DeleteBookedTicketResponse
+    public class RevokeBookedTicketResponse
     {
         public string TicketCode { get; set; } = string.Empty;
         public string TicketName { get; set; } = string.Empty;

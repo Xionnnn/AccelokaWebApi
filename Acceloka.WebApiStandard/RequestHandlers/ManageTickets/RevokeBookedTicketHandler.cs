@@ -10,18 +10,18 @@ using System.Text;
 
 namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
 {
-    public class DeleteBookedTicketHandler : IRequestHandler<DeleteBookedTicketRequest, DeleteBookedTicketResponse?>
+    public class RevokeBookedTicketHandler : IRequestHandler<RevokeBookedTicketRequest, RevokeBookedTicketResponse?>
     {
         private readonly AccelokaDbContext _db;
-        private readonly ILogger<DeleteBookedTicketHandler> _logger;
+        private readonly ILogger<RevokeBookedTicketHandler> _logger;
 
-        public DeleteBookedTicketHandler(AccelokaDbContext db, ILogger<DeleteBookedTicketHandler> logger)
+        public RevokeBookedTicketHandler(AccelokaDbContext db, ILogger<RevokeBookedTicketHandler> logger)
         {
             _db = db;
             _logger = logger;
         }
 
-        public async Task<DeleteBookedTicketResponse?> Handle(DeleteBookedTicketRequest request, CancellationToken ct)
+        public async Task<RevokeBookedTicketResponse?> Handle(RevokeBookedTicketRequest request, CancellationToken ct)
         {
             var bookingInfo = await (from bt in _db.BookingTickets
                                   join t in _db.Tickets on bt.TicketCode equals t.TicketCode
@@ -30,38 +30,46 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                                   select new
                                   {
                                       bt,
-                                      t.TicketCode,
-                                      ticketName = t.Name,
+                                      t,
                                       categoryName = c.Name,
                                   }).FirstOrDefaultAsync(ct);
 
             _logger.LogInformation($"Attempting to delete booked ticket: {bookingInfo}");
 
-            if (bookingInfo is null)
-            {
-                throw new InvalidOperationException("Booked ticket not found.");
-            }
-            if( bookingInfo.bt.Quantity < request.Qty)
-            {
-                throw new InvalidOperationException("Insufficient quantity to delete.");
-            }
-
             var quantityLeft = bookingInfo.bt.Quantity -= request.Qty;
-            
 
             if (quantityLeft <= 0)
             {
                 _db.BookingTickets.Remove(bookingInfo.bt);
+
+                //karena di database ada table booking dan booking_ticket, maka jika semua booking_tickets sudah dihapus kita perlu menghapus bookingnya juga
+                var hasBooking = await _db.BookingTickets
+                    .Where(bt => bt.BookingId == request.BookedTicketId && bt.TicketCode != request.TicketCode)
+                    .AnyAsync(ct);
+
+                if (!hasBooking)
+                {
+                    var bookingToRemove = await _db.Bookings
+                        .FirstOrDefaultAsync(b => b.Id == request.BookedTicketId, ct);
+                        
+                    if(bookingToRemove != null)
+                    {
+                        _db.Bookings.Remove(bookingToRemove);
+                    }
+                }
             }
+
+            //saya asumsikan bahawa quota ticket yang direvoke akan bertambah balik
+            bookingInfo.t.Quota += request.Qty;
 
             await _db.SaveChangesAsync(ct);
 
             _logger.LogInformation($"The booked Ticket quantity after revoked is : {quantityLeft}");
 
-            return new DeleteBookedTicketResponse
+            return new RevokeBookedTicketResponse
             {
-                TicketCode = bookingInfo.TicketCode,
-                TicketName = bookingInfo.ticketName,
+                TicketCode = bookingInfo.t.TicketCode,
+                TicketName = bookingInfo.t.Name,
                 TicketCategory = bookingInfo.categoryName,
                 Quantity = quantityLeft
             };
