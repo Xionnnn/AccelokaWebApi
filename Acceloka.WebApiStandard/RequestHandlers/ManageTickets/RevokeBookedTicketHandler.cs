@@ -42,7 +42,7 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
             {
                 _db.BookingTickets.Remove(bookingInfo.bt);
 
-                //karena di database ada table booking dan booking_ticket, maka jika semua booking_tickets sudah dihapus kita perlu menghapus bookingnya juga
+                //Since the booking is split between booking and booking_ticket tables in the database, if all booking_tickets are deleted we need to delete the booking as well
                 var hasBooking = await _db.BookingTickets
                     .Where(bt => bt.BookingId == request.BookedTicketId && bt.TicketCode != request.TicketCode)
                     .AnyAsync(ct);
@@ -50,7 +50,8 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                 if (!hasBooking)
                 {
                     var bookingToRemove = await _db.Bookings
-                        .FirstOrDefaultAsync(b => b.Id == request.BookedTicketId, ct);
+                        .Where(b => b.Id == request.BookedTicketId)
+                        .FirstOrDefaultAsync(ct);
                         
                     if(bookingToRemove != null)
                     {
@@ -59,7 +60,7 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                 }
             }
 
-            //saya asumsikan bahawa quota ticket yang direvoke akan bertambah balik
+            //I assume that the quota of the revoked ticket will increase back
             bookingInfo.t.Quota += request.Qty;
 
             await _db.SaveChangesAsync(ct);

@@ -17,6 +17,6 @@ namespace Acceloka.WebApiStandard.Contracts.ResponseModels.ManageTickets
     {
         public string TicketCode { get; set; } = string.Empty;
         public string TicketName { get; set; } = string.Empty;
-        public DateTime EventDate { get; set; }
+        public string EventDate { get; set; } = string.Empty;
     }
 }

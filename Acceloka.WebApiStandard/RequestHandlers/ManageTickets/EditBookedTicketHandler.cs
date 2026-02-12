@@ -32,6 +32,8 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                 })
                 .ToList();
 
+            _logger.LogInformation($"Editing booked ticket id {request.BookedTicketId} with {filteredTicket.Count} items");
+
             var reqCodes = filteredTicket.Select(x => x.TicketCode).ToList();
             var qtyByCode = filteredTicket.ToDictionary(x => x.TicketCode, x => x.Quantity);
 
@@ -47,17 +49,15 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                                      }).ToListAsync(ct);
 
 
-            var foundCodes = bookingInfo.Select(x => x.ticket.TicketCode).ToHashSet();
-            var missingCodes = reqCodes.Where(c => !foundCodes.Contains(c)).ToList();
             var reqTicketByCode = filteredTicket.ToDictionary(x => x.TicketCode, x => x);
 
             foreach(var item in bookingInfo)
             {
                 var reqTicket = reqTicketByCode[item.ticket.TicketCode];
 
-                //quota tiket sekarang adalah - selisih dari qty baru - lama
-                //sisa 7 udah ke book 3 dan diubah ke 5. Maka quota nya berkurang 2 jadi sisa 5
-                //sisa7 udah ke book 5 diubah ke 3. Maka quota nya adalah 3-5 = (-2) 7-(-2) jadi sisa 9
+                //The ticket quota is now - the difference from the new qty - old qty
+                //For example, if there are 7 remaining quota of the ticket, 3 has been booked and then changed to 5. The quota is reduced by 2 with 5 remaining
+                //If there are 7 remaining quota, 5 have been booked and changed to 3. The quota is 3-5 = (-2) 7-(-2) so there are 9 remaining
                 item.ticket.Quota -= (reqTicket.Quantity - item.bookedTicket.Quantity);
                 item.bookedTicket.Quantity = reqTicket.Quantity;
             }

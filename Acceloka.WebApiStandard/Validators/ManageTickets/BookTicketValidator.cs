@@ -78,7 +78,7 @@ namespace Acceloka.WebApiStandard.Validators.ManageTickets
                 var ticket = ticketByCode[code];
                 var requestedQty = qtyByCode[code];
 
-                //validation ini bisa untuk validasi ticket yang quota nya sudah habis maupun yang request quota melebihi jumlah quota ticket
+                //This validation can be used to validate tickets that are sold out as well as requests that exceed the ticket quota
                 if (ticket.Quota < requestedQty)
                 {
                     ctx.AddFailure(nameof(BookTicketRequest.Items), $"Not enough quota: {code}");

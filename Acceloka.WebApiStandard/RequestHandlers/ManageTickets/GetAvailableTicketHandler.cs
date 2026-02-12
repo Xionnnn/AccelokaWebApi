@@ -19,8 +19,6 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
 
         public async Task<GetAvailableTicketResponse?> Handle(GetAvailableTicketRequest request, CancellationToken ct)
         {
-            _logger.LogInformation("Getting available tickets with filters: CategoryName={CategoryName}, TicketCode={TicketCode}", request.CategoryName, request.TicketCode);
-
             var query = _db.Tickets
                .Include(t => t.Category)
                .Where(t => t.Quota > 0)
@@ -48,12 +46,14 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
 
             if (request.MinimalEventDate.HasValue)
             {
-                query = query.Where(t => t.EventDate >= request.MinimalEventDate.Value);
+                var startUtc = DateTime.SpecifyKind(request.MinimalEventDate.Value.Date, DateTimeKind.Utc);
+                query = query.Where(t => t.EventDate >= startUtc);
             }
 
             if (request.MaximalEventDate.HasValue)
             {
-                query = query.Where(t => t.EventDate <= request.MaximalEventDate.Value);
+                var endExclusiveUtc = DateTime.SpecifyKind(request.MaximalEventDate.Value.Date.AddDays(1), DateTimeKind.Utc);
+                query = query.Where(t => t.EventDate <= endExclusiveUtc);
             }
 
             query = ApplySorting(query, request.OrderBy, request.OrderState);
@@ -68,13 +68,13 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                     CategoryName = t.Category.Name,
                     TicketCode = t.TicketCode,
                     TicketName = t.Name,
-                    EventDate = t.EventDate,
+                    EventDate = t.EventDate.ToString("dd-MM-yyyy HH:mm"),
                     Price = t.Price,
                     Quota = t.Quota
                 })
                 .ToListAsync(ct);
 
-            _logger.LogInformation("Found {Count} tickets out of {Total} total", items.Count, totalItems);
+            _logger.LogInformation($"Found {items.Count} tickets out of {totalItems} total");
 
             var totalPages = (int)Math.Ceiling(totalItems / (double)request.PageSize);
 
@@ -83,7 +83,7 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                 Tickets = items,
                 PageNumber = request.PageNumber,
                 PageSize = request.PageSize,
-                TotalItems = totalItems,
+                TotalTickets = totalItems,
                 TotalPages = totalPages
             };
 
@@ -122,7 +122,7 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                     ? query.OrderByDescending(t => t.Quota)
                     : query.OrderBy(t => t.Quota),
 
-                // default orderingnya menggunakan TicketCode ascending
+                //The default ordering is using TicketCode ascending
                 _ => query.OrderBy(t => t.TicketCode)
             };
         }

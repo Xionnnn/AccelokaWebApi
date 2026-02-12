@@ -42,11 +42,11 @@ public partial class AccelokaDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BookingDate)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("booking_date");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("created_at");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(255)
@@ -54,7 +54,7 @@ public partial class AccelokaDbContext : DbContext
                 .HasColumnName("created_by");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("updated_at");
             entity.Property(e => e.UpdatedBy)
                 .HasMaxLength(255)
@@ -74,7 +74,7 @@ public partial class AccelokaDbContext : DbContext
                 .HasColumnName("ticket_code");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("created_at");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(255)
@@ -85,7 +85,7 @@ public partial class AccelokaDbContext : DbContext
                 .HasColumnName("quantity");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("updated_at");
             entity.Property(e => e.UpdatedBy)
                 .HasMaxLength(255)
@@ -111,7 +111,7 @@ public partial class AccelokaDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("created_at");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(255)
@@ -122,7 +122,7 @@ public partial class AccelokaDbContext : DbContext
                 .HasColumnName("name");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("updated_at");
             entity.Property(e => e.UpdatedBy)
                 .HasMaxLength(255)
@@ -142,14 +142,14 @@ public partial class AccelokaDbContext : DbContext
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("created_at");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(255)
                 .HasDefaultValueSql("'System'::character varying")
                 .HasColumnName("created_by");
             entity.Property(e => e.EventDate)
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("event_date");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
@@ -160,7 +160,7 @@ public partial class AccelokaDbContext : DbContext
             entity.Property(e => e.Quota).HasColumnName("quota");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("updated_at");
             entity.Property(e => e.UpdatedBy)
                 .HasMaxLength(255)

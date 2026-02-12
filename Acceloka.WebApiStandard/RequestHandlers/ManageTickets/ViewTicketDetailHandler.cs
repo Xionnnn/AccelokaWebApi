@@ -6,7 +6,8 @@
     using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
-    using System.Text;
+using System.Globalization;
+using System.Text;
 
     namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
     {
@@ -56,7 +57,7 @@
                         {
                             TicketCode = t.TicketCode,
                             TicketName = t.ticketName,
-                            EventDate = t.EventDate
+                            EventDate = t.EventDate.ToString("dd-MM-yyyy HH:mm")
                         }).ToList()
                     }).ToList();
 

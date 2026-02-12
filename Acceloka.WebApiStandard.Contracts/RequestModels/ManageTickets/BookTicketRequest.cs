@@ -10,7 +10,7 @@ namespace Acceloka.WebApiStandard.Contracts.RequestModels.ManageTickets
     {
         public List<BookTicketDto> Items { get; set; } = new List<BookTicketDto>();
 
-        public DateTime BookingDate = DateTime.Now;
+        public DateTime BookingDate = DateTime.UtcNow;
     }
 
     public class BookTicketDto
