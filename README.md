@@ -8,6 +8,14 @@ The .Sql backup file is in .\Acceloka.WebApiStandard.Entities\Sql\acceloka_expor
 
 **Tables**
 1. Tickets
+
+   For Tickets, the PK is using ticket_code based on first letter of every word in the ticket category name and 3 digit sequence number starting from 001. For example, the ticket_code for first ticket with category: "Transportasi Laut" will be TL001, the second one will be TL002 and so on. This will be a problem for automatically added row in database because the PK is not id with sequence 1,2,3...
+
+   There are a solutions for this problem (future work),
+   1. We can add both the first letter of every word in the ticket category name and ticket sequence to categories table, so a category will hold it's prefix and the last sequence of ticket in that category. For every ticket insertion transaction, we can increase the number of sequence by 1 for the ticket category. This can be done in AddTicketHandler if there's requirement in the future.
+   2. On each ticket insertion, increment `last_seq` atomically (e.g., `UPDATE categories SET last_seq = last_seq + 1 RETURNING last_seq`) and then generate `ticket_code = prefix + seq.PadLeft(3, '0')`. This avoids race conditions under concurrent inserts
+
+   However, since the current exam requirements do not include any endpoint for inserting new tickets, this feature is considered out of scope and is not implemented in the current database.
 ```
 ticket_code varchar(10) primary key,
 name varchar(255) not null,
