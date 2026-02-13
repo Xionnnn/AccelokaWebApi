@@ -52,6 +52,7 @@ primary key(booking_id, ticket_code)
 ```
 
 ERD:
+
 <img width="1434" height="614" alt="Untitled(3)" src="https://github.com/user-attachments/assets/3bbbd0c5-8c1b-4f40-99e5-76e8249899bb" />
 
 ## **Clean Code Architecture and MARVEL Pattern implementation**
@@ -67,6 +68,7 @@ In the solution, there are 4 projects that correspond to the layers in Clean Cod
 
 Logging has been set up using the Serilog sink file, configured in Program.cs. In each handler, information is logged via the DI-injected logger using the _logger.LogInformation() method.
 Log is stored in "Log" folder which will be automatically created when running the API:
+
 <img width="340" height="105" alt="Screenshot 2026-02-12 221645" src="https://github.com/user-attachments/assets/f1046af0-6303-426f-b0c2-71a185a45f8e" />
 
 The API has also implemented MediatR and FluentValidation, both have been integrated via MediatR Pipeline middleware in Acceloka.WebApiStandard/Commons/Behaviors/ValidationBehavior.cs which will run the validator before every handler is executed.
