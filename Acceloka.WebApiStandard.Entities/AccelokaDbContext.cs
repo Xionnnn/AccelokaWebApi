@@ -44,6 +44,12 @@ public partial class AccelokaDbContext : DbContext
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp with time zone")
                 .HasColumnName("booking_date");
+            entity.Property(e => e.BookingPrice)
+                .HasPrecision(10, 2)
+                .HasColumnName("booking_price");
+            entity.Property(e => e.BookingQuantity)
+                .HasDefaultValue(0)
+                .HasColumnName("booking_quantity");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp with time zone")

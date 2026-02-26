@@ -61,15 +61,7 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                     Quantity = item.Quantity
                 });
             }
-
-            var booking = new Booking
-            {
-                BookingDate = request.BookingDate,
-                BookingTickets = bookedTickets
-            };
-
-            _db.Add(booking);
-            await _db.SaveChangesAsync(ct);
+             
 
             var categoryIds = tickets.Select(t => t.CategoryId).Distinct().ToList();
 
@@ -93,7 +85,19 @@ namespace Acceloka.WebApiStandard.RequestHandlers.ManageTickets
                         Price = t.Price
                     }).ToList()
                 })
-                .ToList();
+                .ToList(); 
+
+       
+            var booking = new Booking
+            {
+                BookingPrice = categoriesDto.Sum(x => x.SummaryPrice),
+                BookingQuantity = categoriesDto.Sum(x => x.Tickets.Sum(t => qtyByCode[t.TicketCode])),
+                BookingDate = request.BookingDate,
+                BookingTickets = bookedTickets
+            };
+
+            _db.Add(booking);
+            await _db.SaveChangesAsync(ct);
 
             return new BookTicketResponse
             {

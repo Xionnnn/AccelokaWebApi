@@ -18,4 +18,6 @@ public partial class Booking
     public string UpdatedBy { get; set; } = null!;
 
     public virtual ICollection<BookingTicket> BookingTickets { get; set; } = new List<BookingTicket>();
+    public decimal BookingPrice { get; set; }
+    public decimal BookingQuantity { get; set; }
 }
