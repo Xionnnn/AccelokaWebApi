@@ -28,12 +28,14 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Ge
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<BookTicketHandler>());
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<ViewTicketDetailHandler>());
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RevokeBookedTicketHandler>());
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetBookingHandler>());
 
 // FluentValidation (scan assembly Application)
 builder.Services.AddValidatorsFromAssemblyContaining<GetAvailableTicketValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<BookTicketValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<ViewTicketDetailValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RevokeBookedTicketValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<GetBookingValidator>();
 
 // FluentValidation via MediatR pipeline behavior
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -41,6 +43,26 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 //Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// CORS Configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+
+    // Atau pake policy spesifik untuk production:
+    // options.AddPolicy("AllowSpecificOrigins", policy =>
+    // {
+    //     policy.WithOrigins("https://yourdomain.com", "http://localhost:3000")
+    //           .AllowAnyMethod()
+    //           .AllowAnyHeader()
+    //           .AllowCredentials();
+    // });
+});
 
 //Db Connection
 var connectionString = builder.Configuration.GetConnectionString("PgSQLDB");
@@ -59,6 +81,9 @@ if (app.Environment.IsDevelopment())
 
 // Error Compliant
 app.UseExceptionHandler("/error");
+
+// Enable CORS - harus sebelum UseAuthorization
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 

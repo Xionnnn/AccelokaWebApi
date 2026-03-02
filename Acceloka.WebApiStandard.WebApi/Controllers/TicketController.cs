@@ -24,6 +24,13 @@ namespace Acceloka.WebApiStandard.WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("get-booked-ticket")]
+        public async Task<IActionResult> GetBookedTicket([FromQuery] GetBookingRequest request, CancellationToken ct)
+        {
+            var response = await _mediator.Send(request, ct);
+            return Ok(response);
+        }
+
 
         [HttpPost("book-ticket")]
         public async Task<IActionResult> BookTicket([FromBody] BookTicketRequest request, CancellationToken ct)

@@ -19,5 +19,5 @@ public partial class Booking
 
     public virtual ICollection<BookingTicket> BookingTickets { get; set; } = new List<BookingTicket>();
     public decimal BookingPrice { get; set; }
-    public decimal BookingQuantity { get; set; }
+    public int BookingQuantity { get; set; }
 }

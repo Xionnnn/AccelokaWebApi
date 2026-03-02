@@ -6,16 +6,14 @@ using System.Text;
 
 namespace Acceloka.WebApiStandard.Contracts.RequestModels.ManageTickets
 {
-    public class GetAvailableTicketRequest : IRequest<GetAvailableTicketResponse>
+    public class GetBookingRequest : IRequest<GetBookingResponse>
     {
-        public string CategoryName { get; set; } = string.Empty;
-        public string TicketCode { get; set; } = string.Empty;
-        public string TicketName { get; set; } = string.Empty;
-        public decimal? Price { get; set; }
-        public DateTime? MinimalEventDate { get; set; }
-        public DateTime? MaximalEventDate { get; set; }
+        public int? BookingId { get; set; }
         public string OrderBy { get; set; } = string.Empty;
         public string OrderState { get; set; } = string.Empty;
+        public DateTime? MinimalEventDate { get; set; }
+        public DateTime? MaximalEventDate { get; set; }
+        public decimal? BookingPrice { get; set;  }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 7;
     }
