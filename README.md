@@ -1,4 +1,7 @@
 # AccelokaWebApi Doccumentation
+## **Notes:**
+The latest effective branch is in "UIAdjustment" branch. There are a few updates such as: adding booking_price and booking_quantity column to bookings table, there's also a new endpoint for fetching Booking list. **THE FRONT END WILL NOT BE COMPATIBLE WITH "master" BRANCH**
+
 ## **Database Convention:**
 
 The database uses PostgreSQL. The naming convention for tables and columns is snake_case. Table names use plural words, while column names use singular words.
